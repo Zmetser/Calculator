@@ -22,9 +22,7 @@ class ViewController: UIViewController {
     var displayValue: Double? {
         get {
             if let text = display.text {
-                if let number = NSNumberFormatter().numberFromString(text) {
-                    return number.doubleValue
-                }
+                return NSNumberFormatter().numberFromString(text)?.doubleValue
             }
             return nil
         }
