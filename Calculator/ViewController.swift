@@ -69,11 +69,7 @@ class ViewController: UIViewController {
     @IBAction func enter() {
         userIsTyping = false;
         if let value = displayValue {
-            if let result = brain.pushOperand(value) {
-                displayValue = result
-            } else {
-                displayValue = nil
-            }
+            displayValue = brain.pushOperand(value)
         }
         history.text = brain.humanReadableStack()
     }
@@ -113,11 +109,7 @@ class ViewController: UIViewController {
     @IBAction func backspace() {
         if userIsTyping {
             if let text = display.text {
-                if countElements(text) > 1 {
-                    display.text = dropLast(text)
-                } else {
-                    display.text = "0"
-                }
+                display.text = countElements(text) > 1 ? dropLast(text) : "0"
             }
         }
     }
