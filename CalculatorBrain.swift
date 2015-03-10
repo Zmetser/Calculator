@@ -159,6 +159,10 @@ class CalculatorBrain {
         opStack.removeAll(keepCapacity: true)
     }
     
+    func clearVariables() {
+        variableValues.removeAll(keepCapacity: true)
+    }
+    
     func removeLast() {
         opStack.removeLast()
     }

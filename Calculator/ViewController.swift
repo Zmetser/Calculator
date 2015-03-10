@@ -97,8 +97,9 @@ class ViewController: UIViewController {
     
     @IBAction func clear() {
         display.text = "0"
-        history.text = ""
+        history.text = " "
         brain.clearStack()
+        brain.clearVariables()
         userIsTyping = false
     }
     
