@@ -27,7 +27,7 @@ class ViewController: UIViewController {
             return nil
         }
         set {
-            display.text = newValue == nil ? "0" : "\(newValue!)"
+            display.text = "\(newValue ?? 0)"
         }
     }
 
@@ -56,11 +56,7 @@ class ViewController: UIViewController {
         }
         
         if let operand = sender.currentTitle {
-            if let result = brain.performOperation(operand) {
-                displayValue = result
-            } else {
-                displayValue = nil
-            }
+            displayValue = brain.performOperation(operand)
             userIsTyping = false;
             history.text = brain.humanReadableStack()
         }
