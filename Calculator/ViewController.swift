@@ -89,6 +89,20 @@ class ViewController: UIViewController {
         }
     }
     
+    
+    @IBAction func replaceVariable(sender: UIButton) {
+        if userIsTyping { enter() }
+        displayValue = brain.pushOperand("M")
+    }
+    
+    @IBAction func setVariable(sender: UIButton) {
+        if let value = displayValue {
+            brain.variableValues["M"] = value
+            userIsTyping = false
+            displayValue = brain.evaluate()
+        }
+    }
+    
     @IBAction func clear() {
         display.text = "0"
         history.text = ""

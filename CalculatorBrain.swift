@@ -15,6 +15,7 @@ class CalculatorBrain {
         case Constant(String, Double)
         case UnaryOperation(String, Double -> Double)
         case BinaryOperarion(String, (Double, Double) -> Double)
+        case Variable(String, String -> Double?)
         
         var description: String {
             get {
@@ -23,14 +24,16 @@ class CalculatorBrain {
                 case .Constant(let symbol, _): return symbol
                 case .UnaryOperation(let symbol, _): return symbol
                 case .BinaryOperarion(let symbol, _): return symbol
+                case .Variable(let symbol, _): return symbol
                 }
             }
         }
     }
     
     private var opStack = [Op]()
-    
     private var knownOps = [String: Op]()
+
+    var variableValues = [String: Double]()
     
     typealias PropertyList = AnyObject
     var program: PropertyList {
@@ -74,6 +77,8 @@ class CalculatorBrain {
             switch op {
             case .Operand(let operand):
                 return (operand, remainingOps)
+            case .Variable(let symbol, let operation):
+                return (operation(symbol), remainingOps)
             case .Constant(_, let operand):
                 return (operand, remainingOps)
             case .UnaryOperation(_, let operation):
@@ -97,6 +102,11 @@ class CalculatorBrain {
     func evaluate() -> Double? {
         let (result, _) = evaluate(opStack)
         return result
+    }
+    
+    func pushOperand(symbol: String) -> Double? {
+        opStack.append(Op.Variable(symbol, { self.variableValues[$0] }))
+        return evaluate()
     }
     
     func pushOperand(operand: Double) -> Double? {
@@ -133,6 +143,8 @@ class CalculatorBrain {
                         return ("(" + result2 + " " + symbol + " " + result + ")", op2Evaluation.remainingOps)
                     }
                 }
+            case .Variable(let symbol, _):
+                return (symbol, remainingOps)
             }
         }
         return ("0", stack)
